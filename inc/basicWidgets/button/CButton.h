@@ -5,7 +5,7 @@
 
 #include "lvgl/lvgl.h"
 #include "CObject.h"
-#include "CCallbackInterface.h" 
+#include "CLVGLCallbackInterface.h" 
 
 class CButton : public CObject
 {
@@ -13,11 +13,11 @@ private:
     uint32_t mId = 0;
     lv_obj_t * mImage = nullptr;
     lv_obj_t * mLabel = nullptr;
-    CCallbackInterface& itsCallbackInterface;
+    CLVGLCallbackInterface& itsCallbackInterface;
     static void eventCallback(lv_event_t * aEvent);
 public:
     CButton(uint32_t aId, 
-            CCallbackInterface& aCallbackInterface, 
+            CLVGLCallbackInterface& aCallbackInterface, 
             lv_obj_t * aParent = nullptr, 
             int32_t aX = 0, 
             int32_t aY = 0, 

@@ -5,7 +5,7 @@
 
 
 CButton::CButton(uint32_t aId, 
-    CCallbackInterface& aCallbackInterface, 
+    CLVGLCallbackInterface& aCallbackInterface, 
     lv_obj_t * aParent, 
     int32_t aX, 
     int32_t aY, 
