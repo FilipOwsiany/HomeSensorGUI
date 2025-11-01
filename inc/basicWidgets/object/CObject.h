@@ -10,6 +10,7 @@ protected:
     lv_obj_t * mObject = nullptr;
 public:
     CObject();
+    CObject(lv_obj_t * aParent, int32_t aWidth, int32_t aHeight, int32_t aCol, int32_t aRow);
     ~CObject();
 
     void setPosition(int32_t aX, int32_t aY);
