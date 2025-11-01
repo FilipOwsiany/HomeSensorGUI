@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(displayApplication C CXX)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)   # *.a
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)   # *.so
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)   # executables
+
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17) 
@@ -24,9 +29,15 @@ set(MAIN_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/basicWidgets/button/CButton.cpp
     ${PROJECT_SOURCE_DIR}/basicWidgets/object/CObject.cpp
     ${PROJECT_SOURCE_DIR}/basicWidgets/cell/CCell.cpp
-    ${PROJECT_SOURCE_DIR}/common/CCallbackInterface.cpp
+    ${PROJECT_SOURCE_DIR}/basicWidgets/infoBox/CInfoBox.cpp
+    ${PROJECT_SOURCE_DIR}/common/CLVGLCallbackInterface.cpp
     ${PROJECT_SOURCE_DIR}/mainViewManager/CMainViewManager.cpp
     ${PROJECT_SOURCE_DIR}/statusBar/CStatusBar.cpp
+    ${PROJECT_SOURCE_DIR}/views/sensorsView/CSensorsView.cpp
+    ${PROJECT_SOURCE_DIR}/views/layoutView/CLayoutView.cpp
+    ${PROJECT_SOURCE_DIR}/views/settingsView/CSettingsView.cpp
+    ${PROJECT_SOURCE_DIR}/views/infoView/CInfoView.cpp
+    ${PROJECT_SOURCE_DIR}/views/sensorsView/sensor/CSensor.cpp
 )
 
 set(MAIN_SOURCE_INCLUDES 
@@ -36,13 +47,20 @@ set(MAIN_SOURCE_INCLUDES
     ${PROJECT_INCLUDE_DIR}/basicWidgets/button
     ${PROJECT_INCLUDE_DIR}/basicWidgets/object
     ${PROJECT_INCLUDE_DIR}/basicWidgets/cell
+    ${PROJECT_INCLUDE_DIR}/basicWidgets/infoBox
     ${PROJECT_INCLUDE_DIR}/common
     ${PROJECT_INCLUDE_DIR}/mainViewManager
     ${PROJECT_INCLUDE_DIR}/statusBar
+    ${PROJECT_INCLUDE_DIR}/views/sensorsView
+    ${PROJECT_INCLUDE_DIR}/views/layoutView
+    ${PROJECT_INCLUDE_DIR}/views/settingsView
+    ${PROJECT_INCLUDE_DIR}/views/infoView
+    ${PROJECT_INCLUDE_DIR}/views/sensorsView/sensor
 )
 
 if(CMAKE_CROSSCOMPILING)
-    message("\n\nBuilding for RPI5\n\n")
+    message("************************* INFO **************************")
+    message("Building for RPI5")
 
     set(LV_BUILD_CONF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/config_rpi5/lv_conf.h"
         CACHE FILEPATH "LVGL config file" FORCE)
@@ -68,7 +86,8 @@ if(CMAKE_CROSSCOMPILING)
         assets
     )
 else()
-    message("\n\nBuilding for Host\n\n")
+    message("************************* INFO **************************")
+    message("Building for Host")
 
     set(LV_BUILD_CONF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/config_pc/lv_conf.h"
         CACHE FILEPATH "LVGL config file" FORCE)
