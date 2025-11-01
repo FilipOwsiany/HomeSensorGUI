@@ -6,21 +6,24 @@
 #include <string>
 #include <algorithm>
 
+#include "CObject.h"
+
 #include "lvgl/lvgl.h"
 
-#include "CCallbackInterface.h"
+#include "CLVGLCallbackInterface.h"
 #include "SObjectContairner.h"
 
-class CMainViewManager : public CCallbackInterface
+class CMainViewManager : public CLVGLCallbackInterface
 {
 private:
-    std::vector<SObjectContairner<lv_obj_t>> mViewContainers;
-    void callback(lv_event_t * aEvent, uint32_t aId) override;
+    std::vector<SObjectContairner<CObject>> mViewContainers;
+    void callback(lv_event_t *aEvent, uint32_t aId) override;
+
 public:
     CMainViewManager(/* args */);
     ~CMainViewManager();
 
-    void registerView(lv_obj_t * aView, uint32_t aId, const std::string& aName);
+    void registerView(CObject *aView, uint32_t aId, const std::string &aName);
 };
 
 #endif // C_MAIN_VIEW_MANAGER_H
