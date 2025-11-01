@@ -22,6 +22,15 @@ struct sigaction newSegvSig;
 #include "CStatusBar.h"
 #include "CMainViewManager.h"
 
+#include "CSensorsView.h"
+#include "CLayoutView.h"
+#include "CSettingsView.h"
+#include "CInfoView.h"
+
+#include "CSensor.h"
+
+#include "CCustomEvent.h"
+
 lv_obj_t * objects[4] = {nullptr};
 
 #define BACKTRACE_DEPTH (64)
@@ -236,53 +245,76 @@ int main(void)
         lv_indev_set_display(indev, disp);
     #endif
 
-    //lv_example_get_started_2();
-    //lv_example_style_1();
-    //lv_example_image_1();
-    //lv_example_image_2();
-    //lv_example_style_5();
-
     lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x252B3B), 0);
-
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_radius(&style, 5);
-    lv_style_set_bg_opa(&style, LV_OPA_COVER);
-    lv_style_set_bg_color(&style, lv_color_hex(0x0C1826));
-    lv_style_set_shadow_width(&style, 0);
-    lv_style_set_shadow_color(&style, lv_palette_main(LV_PALETTE_BLUE));
-    lv_style_set_border_width(&style, 0);
-    lv_style_set_pad_all(&style, 10);
-
-
-    for (size_t i = 0; i < sizeof(objects) / sizeof(objects[0]); i++)
-    {
-        objects[i] = lv_obj_create(lv_screen_active());
-        lv_obj_t * obj = objects[i];
-        lv_obj_set_size(obj, 1030, 570);
-        lv_obj_set_pos(obj, 230, 130);
-        lv_obj_add_style(obj, &style, 0);
-        // lv_obj_set_style_border_width(obj, 0, 0);
-        // lv_obj_set_style_pad_all(obj, 10, 0);
-        lv_obj_t * label = lv_label_create(obj);
-        lv_label_set_text_fmt(label, "View: %d", i);
-        lv_obj_center(label);
-        lv_obj_add_flag(obj, LV_OBJ_FLAG_HIDDEN);
-    }
-
-    // lv_obj_t * obj = lv_obj_create(lv_screen_active());
-    // lv_obj_set_size(obj, 1030, 80);
-    // lv_obj_set_pos(obj, 230, 20);
-    // lv_obj_add_style(obj, &style, 0);
 
     CMainViewManager* mainViewManager = new CMainViewManager();
     CSidePanel * panel = new CSidePanel(*mainViewManager, lv_screen_active(), 20, 20, 180, 680);
     CStatusBar * statusBar = new CStatusBar(lv_screen_active(), 230, 20, 1030, 80);
 
-    mainViewManager->registerView(objects[0], 0, "View 0");
-    mainViewManager->registerView(objects[1], 1, "View 1");
-    mainViewManager->registerView(objects[2], 2, "View 2");
-    mainViewManager->registerView(objects[3], 3, "View 3");
+    CSensorsView* sensorsView = new CSensorsView(lv_screen_active(), 230, 130, 1030, 570);
+    CLayoutView* layoutView = new CLayoutView(lv_screen_active(), 230, 130, 1030, 570);
+    CSettingsView* settingsView = new CSettingsView(lv_screen_active(), 230, 130, 1030, 570);
+    CInfoView* infoView = new CInfoView(lv_screen_active(), 230, 130, 1030, 570);
+
+
+    mainViewManager->registerView(sensorsView,  0,     "Sensors View");
+    mainViewManager->registerView(layoutView,   1,     "Layout View");
+    mainViewManager->registerView(settingsView, 2,     "Settings View");
+    mainViewManager->registerView(infoView,     3,     "Info View");
+
+    CEventWifi* wifiEvent = new CEventWifi();
+    wifiEvent->setWifiEventType(CEventWifi::EEventWifiType::CONNECTED);
+    statusBar->callback(*wifiEvent);
+
+    CEventCloud* cloudEvent = new CEventCloud();
+    cloudEvent->setCloudEventType(CEventCloud::EEventCloudType::CONNECTED);
+    statusBar->callback(*cloudEvent);
+
+    CEventBluetooth* bluetoothEvent = new CEventBluetooth();
+    bluetoothEvent->setBluetoothEventType(CEventBluetooth::EEventBluetoothType::DISCONNECTED);
+    statusBar->callback(*bluetoothEvent);
+
+
+    CEventSensorName* sensorNameKitchen = new CEventSensorName();
+    sensorNameKitchen->setSensorId(0);
+    sensorNameKitchen->setSensorName("Kitchen");
+    sensorsView->callback(*sensorNameKitchen);
+
+    CEventSensorName* sensorNameBathroom = new CEventSensorName();
+    sensorNameBathroom->setSensorId(1);
+    sensorNameBathroom->setSensorName("Bathroom");
+    sensorsView->callback(*sensorNameBathroom);
+
+    CEventSensorName* sensorNameLivingRoom = new CEventSensorName();
+    sensorNameLivingRoom->setSensorId(2);
+    sensorNameLivingRoom->setSensorName("Living room");
+    sensorsView->callback(*sensorNameLivingRoom);
+
+    CEventSensorName* sensorNameBedroom = new CEventSensorName();
+    sensorNameBedroom->setSensorId(3);
+    sensorNameBedroom->setSensorName("Bedroom");
+    sensorsView->callback(*sensorNameBedroom);
+
+
+    CEventSensorTemperature* sensorTemperature = new CEventSensorTemperature();
+    sensorTemperature->setSensorId(0);
+    sensorTemperature->setSensorTemperature(21);
+    sensorsView->callback(*sensorTemperature);
+
+    CEventSensorHumidity* sensorHumidity = new CEventSensorHumidity();
+    sensorHumidity->setSensorId(0);
+    sensorHumidity->setSensorHumidity(45);
+    sensorsView->callback(*sensorHumidity); 
+
+    CEventSensorPressure* sensorPressure = new CEventSensorPressure();
+    sensorPressure->setSensorId(0);
+    sensorPressure->setSensorPressure(101325);
+    sensorsView->callback(*sensorPressure);
+
+    CEventSensorBattery* sensorBattery = new CEventSensorBattery();
+    sensorBattery->setSensorId(0);
+    sensorBattery->setSensorBatteryLevel(3700);
+    sensorsView->callback(*sensorBattery);
 
     while (1) 
     {
