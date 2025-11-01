@@ -9,7 +9,13 @@ add_library(assets SHARED
         icons/src/cloud.c
         icons/src/wifi.c
         icons/src/bluetooth.c
+        icons/src/humidity.c
+        icons/src/pressure.c
+        icons/src/thermometer.c
+        icons/src/lighting.c
+
         fonts/src/AlanSans_20_Medium.c
+        fonts/src/AlanSans_26_Medium.c
         fonts/src/AlanSans_32_Medium.c
         )
 
