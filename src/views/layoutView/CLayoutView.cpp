@@ -22,7 +22,7 @@ CLayoutView::~CLayoutView()
 {
 }
 
-void CLayoutView::callback(CEventBase& aEvent)
+void CLayoutView::callback(CCustomEventBase& aEvent)
 {
     (void)aEvent;
 }

@@ -89,7 +89,7 @@ CStatusBar::~CStatusBar()
 {
 }
 
-void CStatusBar::callback(CEventBase &aEvent)
+void CStatusBar::callback(CCustomEventBase &aEvent)
 {
     printf("CStatusBar::callback called! ID: %d\n", aEvent.getId());
 
@@ -110,7 +110,7 @@ void CStatusBar::callback(CEventBase &aEvent)
 
     switch (aEvent.getId())
     {
-    case CEventBase::EEventId::WIFI:
+    case CCustomEventBase::EEventId::WIFI:
     {
         lv_obj_t *img = mIconImagesObjects[static_cast<uint32_t>(EIconImageIds::eWifi)];
         if (img == nullptr)
@@ -144,7 +144,7 @@ void CStatusBar::callback(CEventBase &aEvent)
         }
         break;
     }
-    case CEventBase::EEventId::CLOUD:
+    case CCustomEventBase::EEventId::CLOUD:
     {
         lv_obj_t *img = mIconImagesObjects[static_cast<uint32_t>(EIconImageIds::eCloud)];
         if (img == nullptr)
@@ -178,7 +178,7 @@ void CStatusBar::callback(CEventBase &aEvent)
         }
         break;
     }
-    case CEventBase::EEventId::BLUETOOTH:
+    case CCustomEventBase::EEventId::BLUETOOTH:
     {
         lv_obj_t *img = mIconImagesObjects[static_cast<uint32_t>(EIconImageIds::eBluetooth)];
         if (img == nullptr)

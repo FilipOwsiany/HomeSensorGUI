@@ -14,7 +14,7 @@ private:
     /* data */
 public:
     //TODO need to be private
-    void callback(CEventBase& aEvent) override;
+    void callback(CCustomEventBase& aEvent) override;
     CSettingsView(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight);
     ~CSettingsView();
 };

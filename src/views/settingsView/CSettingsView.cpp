@@ -22,7 +22,7 @@ CSettingsView::~CSettingsView()
 {
 }
 
-void CSettingsView::callback(CEventBase& aEvent)
+void CSettingsView::callback(CCustomEventBase& aEvent)
 {
     (void)aEvent;
 }

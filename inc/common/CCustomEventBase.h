@@ -1,9 +1,9 @@
-#ifndef C_EVENT_BASE_H
-#define C_EVENT_BASE_H
+#ifndef C_CUSTOM_EVENT_BASE_H
+#define C_CUSTOM_EVENT_BASE_H
 
 #include "lvgl/lvgl.h"
 
-class CEventBase
+class CCustomEventBase
 {
 public:
 
@@ -22,11 +22,11 @@ public:
 private:
     EEventId mId;
 public:
-    CEventBase() = default;
-    ~CEventBase() = default;
+    CCustomEventBase() = default;
+    ~CCustomEventBase() = default;
 
     EEventId getId() const { return mId; }
     void setId(EEventId aId) { mId = aId; }
 };
 
-#endif // C_EVENT_BASE_H
+#endif // C_CUSTOM_EVENT_BASE_H

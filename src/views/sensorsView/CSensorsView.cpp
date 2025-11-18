@@ -44,11 +44,11 @@ CSensorsView::~CSensorsView()
 {
 }
 
-void CSensorsView::callback(CEventBase& aEvent)
+void CSensorsView::callback(CCustomEventBase& aEvent)
 {
     switch (aEvent.getId())
     {
-        case CEventBase::EEventId::NAME:
+        case CCustomEventBase::EEventId::NAME:
         {
             auto sensorName = static_cast<CEventSensorName &>(aEvent);
             if (mSensors[sensorName.getSensorId()] != nullptr)
@@ -58,7 +58,7 @@ void CSensorsView::callback(CEventBase& aEvent)
             break;
         }
 
-        case CEventBase::EEventId::TEMPERATURE:
+        case CCustomEventBase::EEventId::TEMPERATURE:
         {
             auto sensorTemperature = static_cast<CEventSensorTemperature &>(aEvent);
             if (mSensors[sensorTemperature.getSensorId()] != nullptr)
@@ -68,7 +68,7 @@ void CSensorsView::callback(CEventBase& aEvent)
             break;
         }
 
-        case CEventBase::EEventId::HUMIDITY:
+        case CCustomEventBase::EEventId::HUMIDITY:
         {
             auto sensorHumidity = static_cast<CEventSensorHumidity &>(aEvent);
             if (mSensors[sensorHumidity.getSensorId()] != nullptr)
@@ -78,7 +78,7 @@ void CSensorsView::callback(CEventBase& aEvent)
             break;
         }
 
-        case CEventBase::EEventId::PRESSURE:
+        case CCustomEventBase::EEventId::PRESSURE:
         {
             auto sensorPressure = static_cast<CEventSensorPressure &>(aEvent);
             if (mSensors[sensorPressure.getSensorId()] != nullptr)
@@ -88,7 +88,7 @@ void CSensorsView::callback(CEventBase& aEvent)
             break;
         }
 
-        case CEventBase::EEventId::BATTERY:
+        case CCustomEventBase::EEventId::BATTERY:
         {
             auto sensorBattery = static_cast<CEventSensorBattery &>(aEvent);
             if (mSensors[sensorBattery.getSensorId()] != nullptr)

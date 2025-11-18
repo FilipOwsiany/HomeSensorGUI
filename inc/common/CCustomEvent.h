@@ -1,9 +1,9 @@
 #ifndef C_CUSTOM_EVENT_H
 #define C_CUSTOM_EVENT_H
 
-#include "CEventBase.h"
+#include "CCustomEventBase.h"
 
-class CEventWifi : public CEventBase
+class CEventWifi : public CCustomEventBase
 {
 public:
     enum class EEventWifiType
@@ -26,7 +26,7 @@ public:
     void setWifiEventType(EEventWifiType aType) { mWifiEventType = aType; }
 };
 
-class CEventCloud : public CEventBase
+class CEventCloud : public CCustomEventBase
 {
 public:
     enum class EEventCloudType
@@ -49,7 +49,7 @@ public:
     void setCloudEventType(EEventCloudType aType) { mCloudEventType = aType; }
 };
 
-class CEventBluetooth : public CEventBase
+class CEventBluetooth : public CCustomEventBase
 {
 public:
     enum class EEventBluetoothType
@@ -72,7 +72,7 @@ public:
     void setBluetoothEventType(EEventBluetoothType aType) { mBluetoothEventType = aType; }
 };
 
-class CEventSensorName : public CEventBase
+class CEventSensorName : public CCustomEventBase
 {
 public:
 private:
@@ -92,7 +92,7 @@ public:
     void setSensorId(uint32_t aSensorId) { mSensorId = aSensorId; }
 };
 
-class CEventSensorTemperature : public CEventBase
+class CEventSensorTemperature : public CCustomEventBase
 {
 public:
 private:
@@ -112,7 +112,7 @@ public:
     void setSensorId(uint32_t aSensorId) { mSensorId = aSensorId; }
 };
 
-class CEventSensorHumidity : public CEventBase
+class CEventSensorHumidity : public CCustomEventBase
 {
 public:
 private:
@@ -130,7 +130,7 @@ public:
     void setSensorId(uint32_t aSensorId) { mSensorId = aSensorId; }
 };  
 
-class CEventSensorPressure : public CEventBase
+class CEventSensorPressure : public CCustomEventBase
 {
 public:
 private:
@@ -148,7 +148,7 @@ public:
     void setSensorId(uint32_t aSensorId) { mSensorId = aSensorId; }
 };  
 
-class CEventSensorBattery : public CEventBase
+class CEventSensorBattery : public CCustomEventBase
 {
 public:
 private:

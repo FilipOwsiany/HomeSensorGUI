@@ -121,39 +121,39 @@ CSensor::~CSensor()
 
 }
 
-void CSensor::callback(CEventBase& aEvent)
+void CSensor::callback(CCustomEventBase& aEvent)
 {
     switch (aEvent.getId())
     {
-        case CEventBase::EEventId::NAME:
+        case CCustomEventBase::EEventId::NAME:
         {
             auto sensorName = static_cast<CEventSensorName &>(aEvent);
-            lv_label_set_text_fmt(mSensorName, sensorName.getSensorName().c_str());
+            lv_label_set_text_fmt(mSensorName, "%s", sensorName.getSensorName().c_str());
             break;
         }
 
-        case CEventBase::EEventId::TEMPERATURE:
+        case CCustomEventBase::EEventId::TEMPERATURE:
         {
             auto sensorTemperature = static_cast<CEventSensorTemperature &>(aEvent);
             mInfoBoxes[static_cast<uint32_t>(ESensorInfoBoxIds::eTemperature)]->setValue(sensorTemperature.getSensorTemperature());
             break;
         }
 
-        case CEventBase::EEventId::HUMIDITY:
+        case CCustomEventBase::EEventId::HUMIDITY:
         {
             auto sensorHumidity = static_cast<CEventSensorHumidity &>(aEvent);
             mInfoBoxes[static_cast<uint32_t>(ESensorInfoBoxIds::eHumidity)]->setValue(sensorHumidity.getSensorHumidity());
             break;
         }
 
-        case CEventBase::EEventId::PRESSURE:
+        case CCustomEventBase::EEventId::PRESSURE:
         {
             auto sensorPressure = static_cast<CEventSensorPressure &>(aEvent);
             mInfoBoxes[static_cast<uint32_t>(ESensorInfoBoxIds::ePressure)]->setValue(sensorPressure.getSensorPressure());
             break;
         }
 
-        case CEventBase::EEventId::BATTERY:
+        case CCustomEventBase::EEventId::BATTERY:
         {
             auto sensorBattery = static_cast<CEventSensorBattery &>(aEvent);
             mInfoBoxes[static_cast<uint32_t>(ESensorInfoBoxIds::eBattery)]->setValue(sensorBattery.getSensorBatteryLevel());

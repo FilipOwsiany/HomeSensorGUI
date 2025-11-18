@@ -1,7 +1,7 @@
 #ifndef C_CUSTOM_CALLBACK_INTERFACE_H
 #define C_CUSTOM_CALLBACK_INTERFACE_H
 
-#include "CEventBase.h"
+#include "CCustomEventBase.h"
 
 class CCustomCallbackInterface
 {
@@ -9,7 +9,7 @@ public:
     CCustomCallbackInterface() = default;
     ~CCustomCallbackInterface() = default;
 
-    virtual void callback(CEventBase& aEvent) = 0;
+    virtual void callback(CCustomEventBase& aEvent) = 0;
 };
 
 #endif // C_CUSTOM_CALLBACK_INTERFACE_H

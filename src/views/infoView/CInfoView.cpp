@@ -22,7 +22,7 @@ CInfoView::~CInfoView()
 {
 }
 
-void CInfoView::callback(CEventBase& aEvent)
+void CInfoView::callback(CCustomEventBase& aEvent)
 {
     (void)aEvent;
 }
