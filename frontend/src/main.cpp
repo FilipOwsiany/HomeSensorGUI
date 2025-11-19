@@ -207,7 +207,7 @@ int main(void)
     sensorBattery->setSensorBatteryLevel(3700);
     sensorsView->callback(*sensorBattery);
 
-    //CReceiver receiver;
+    // CReceiver receiver;
 
     SampleEventCallback sampleCallback;
     CEventDispatcher::getInstance().registerCallback(&sampleCallback,

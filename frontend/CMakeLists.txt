@@ -40,6 +40,7 @@ set(MAIN_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/common/CLVGLCallbackInterface.cpp
     ${PROJECT_SOURCE_DIR}/mainViewManager/CMainViewManager.cpp
     ${PROJECT_SOURCE_DIR}/statusBar/CStatusBar.cpp
+    ${PROJECT_SOURCE_DIR}/styleFactory/CStyleFactory.cpp
     ${PROJECT_SOURCE_DIR}/views/sensorsView/CSensorsView.cpp
     ${PROJECT_SOURCE_DIR}/views/layoutView/CLayoutView.cpp
     ${PROJECT_SOURCE_DIR}/views/settingsView/CSettingsView.cpp
@@ -58,6 +59,7 @@ set(MAIN_SOURCE_INCLUDES
     ${PROJECT_INCLUDE_DIR}/common
     ${PROJECT_INCLUDE_DIR}/mainViewManager
     ${PROJECT_INCLUDE_DIR}/statusBar
+    ${PROJECT_INCLUDE_DIR}/styleFactory
     ${PROJECT_INCLUDE_DIR}/views/sensorsView
     ${PROJECT_INCLUDE_DIR}/views/layoutView
     ${PROJECT_INCLUDE_DIR}/views/settingsView

@@ -38,9 +38,8 @@ CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface, lv_obj_t* aPa
     for (uint8_t i = 0; i < static_cast<uint8_t>(ESidePanelButtonIds::eButtonCount); i++) {
         uint8_t row = (i == static_cast<uint8_t>(ESidePanelButtonIds::eBack)) ? 5 : i;
         CCell* cell = new CCell(mObject, 160, 90, 0, row);
-        CButton* button = new CButton(i, *this, cell->getObject(), 0, 0, 150, 80, mSidePanelButtonNames[i]);
+        CButton* button = new CButton(i, *this, cell->getObject(), 0, 0, 150, 80, mSidePanelButtonNames[i], mSidePanelButtonImages[i]);
         mButtonContainers.push_back({ button, i, mSidePanelButtonNames[i] });
-        button->addImage(mSidePanelButtonImages[i]);
     }
 }
 

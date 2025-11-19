@@ -15,6 +15,7 @@ public:
 
     void setPosition(int32_t aX, int32_t aY);
     void setSize(int32_t aWidth, int32_t aHeight);
+    void center();
     lv_obj_t * getObject() { return mObject; }
 };
 

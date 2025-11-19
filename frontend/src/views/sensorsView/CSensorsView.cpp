@@ -3,24 +3,11 @@
 #include "CCell.h"
 #include "CSensor.h"
 #include "CCustomEvent.h"
+#include "CStyleFactory.h"
 
 CSensorsView::CSensorsView(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight) : CObject(aParent, aWidth, aHeight, aX, aY)
 {
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_radius(&style, 5);
-    lv_style_set_bg_opa(&style, LV_OPA_COVER);
-    lv_style_set_bg_color(&style, lv_color_hex(0x0C1826));
-    lv_style_set_shadow_width(&style, 0);
-    lv_style_set_shadow_color(&style, lv_palette_main(LV_PALETTE_BLUE));
-    lv_style_set_border_width(&style, 0);
-
-    lv_obj_set_style_pad_hor(mObject, 16, 0);
-    lv_obj_set_style_pad_ver(mObject, 16, 0);
-    lv_obj_set_style_pad_row(mObject, 16, 0);
-    lv_obj_set_style_pad_column(mObject, 16, 0);
-
-    lv_obj_add_style(mObject, &style, 0);
+    CStyleFactory::sensorsMain(mObject);
 
     static int32_t col_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
     static int32_t row_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
