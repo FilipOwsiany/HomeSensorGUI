@@ -32,6 +32,10 @@ set(LV_BUILD_USE_KCONFIG OFF CACHE BOOL "" FORCE)
 set(MAIN_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/main.cpp
 
+    ${PROJECT_SOURCE_DIR}/CDisplayInitializer.cpp
+    ${PROJECT_SOURCE_DIR}/CGuiApp.cpp
+    ${PROJECT_SOURCE_DIR}/CSegfaultHandler.cpp
+
     ${PROJECT_SOURCE_DIR}/sidePanel/CSidePanel.cpp
     ${PROJECT_SOURCE_DIR}/basicWidgets/button/CButton.cpp
     ${PROJECT_SOURCE_DIR}/basicWidgets/object/CObject.cpp
