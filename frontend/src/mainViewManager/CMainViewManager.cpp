@@ -10,7 +10,6 @@ CMainViewManager::~CMainViewManager()
 
 void CMainViewManager::registerView(CObject *aView, uint32_t aId, const std::string &aName)
 {
-    printf("CMainViewManager::registerView id: %d, ptr: %p, name: %s\n", aId, aView, aName.c_str());
     SObjectContairner<CObject> container;
     container.mObject = aView;
     container.mId = aId;
@@ -20,7 +19,6 @@ void CMainViewManager::registerView(CObject *aView, uint32_t aId, const std::str
 
 void CMainViewManager::callback(lv_event_t *aEvent, uint32_t aId)
 {
-    printf("CMainViewManager::callback id: %d, ptr: %p\n", aId, aEvent);
     auto itView = std::find_if(mViewContainers.begin(), mViewContainers.end(),
                                [aId](const SObjectContairner<CObject> &c)
                                {

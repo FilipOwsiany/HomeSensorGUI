@@ -26,6 +26,8 @@ public:
     static void layoutMain      (lv_obj_t* mObject);
     // Info
     static void infoMain        (lv_obj_t* mObject);
+    // SidePanel
+    static void sidePanelMain   (lv_obj_t* mObject);
 };
 
 #endif // C_STYLE_FACTORY_H

@@ -1,27 +1,26 @@
 #include "CSidePanel.h"
 #include "CButton.h"
 #include "CCell.h"
+#include "CStyleFactory.h"
 #include <algorithm>
 
-CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface, lv_obj_t* aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight)
+CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface,
+                       lv_obj_t* aParent,
+                       int32_t aX,
+                       int32_t aY,
+                       int32_t aWidth,
+                       int32_t aHeight)
     : itsCallbackInterface(aCallbackInterface)
 {
     if (!aParent) return;
 
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_radius(&style, 5);
-    lv_style_set_bg_opa(&style, LV_OPA_COVER);
-    lv_style_set_bg_color(&style, lv_color_hex(0x0C1826));
-    lv_style_set_shadow_width(&style, 0);
-    lv_style_set_shadow_color(&style, lv_palette_main(LV_PALETTE_BLUE));
-    lv_style_set_border_width(&style, 0);
-    lv_style_set_pad_all(&style, 10);
-
     mObject = lv_obj_create(aParent);
-    lv_obj_add_style(mObject, &style, 0);
+
     setPosition(aX, aY);
     setSize(aWidth, aHeight);
+
+    CStyleFactory::sidePanelMain(mObject);
+
     lv_obj_clear_flag(mObject, LV_OBJ_FLAG_SCROLLABLE);
 
     static int32_t col_dsc[] = { LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
@@ -29,16 +28,23 @@ CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface, lv_obj_t* aPa
 
     lv_obj_set_style_grid_column_dsc_array(mObject, col_dsc, 0);
     lv_obj_set_style_grid_row_dsc_array(mObject, row_dsc, 0);
-    lv_obj_set_style_pad_hor(mObject, 5, 0);
-    lv_obj_set_style_pad_ver(mObject, 5, 0);
-    lv_obj_set_style_pad_row(mObject, 5, 0);
-    lv_obj_set_style_pad_column(mObject, 0, 0);
+
     lv_obj_set_layout(mObject, LV_LAYOUT_GRID);
 
     for (uint8_t i = 0; i < static_cast<uint8_t>(ESidePanelButtonIds::eButtonCount); i++) {
         uint8_t row = (i == static_cast<uint8_t>(ESidePanelButtonIds::eBack)) ? 5 : i;
         CCell* cell = new CCell(mObject, 160, 90, 0, row);
-        CButton* button = new CButton(i, *this, cell->getObject(), 0, 0, 150, 80, mSidePanelButtonNames[i], mSidePanelButtonImages[i]);
+        CButton* button = new CButton(
+            i,
+            *this,
+            cell->getObject(),
+            0,
+            0,
+            150,
+            80,
+            mSidePanelButtonNames[i],
+            mSidePanelButtonImages[i]
+        );
         mButtonContainers.push_back({ button, i, mSidePanelButtonNames[i] });
     }
 }

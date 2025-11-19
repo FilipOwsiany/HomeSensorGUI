@@ -155,3 +155,21 @@ void CStyleFactory::infoMain(lv_obj_t* mObject)
     lv_obj_set_style_border_width  (mObject, 0,                     0);
     lv_obj_set_style_pad_all       (mObject, 10,                    0);
 }
+
+// ---------------- SidePanel ----------------
+
+void CStyleFactory::sidePanelMain(lv_obj_t* mObject)
+{
+    lv_obj_set_style_radius       (mObject, 5,                                  0);
+    lv_obj_set_style_bg_opa       (mObject, LV_OPA_COVER,                       0);
+    lv_obj_set_style_bg_color     (mObject, lv_color_hex(0x0C1826),             0);
+    lv_obj_set_style_shadow_width (mObject, 0,                                  0);
+    lv_obj_set_style_shadow_color (mObject, lv_palette_main(LV_PALETTE_BLUE),   0);
+    lv_obj_set_style_border_width (mObject, 0,                                  0);
+
+
+    lv_obj_set_style_pad_hor      (mObject, 5,                                  0);
+    lv_obj_set_style_pad_ver      (mObject, 5,                                  0);
+    lv_obj_set_style_pad_row      (mObject, 5,                                  0);
+    lv_obj_set_style_pad_column   (mObject, 0,                                  0);
+}
