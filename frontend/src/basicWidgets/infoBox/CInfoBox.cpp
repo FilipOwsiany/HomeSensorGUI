@@ -42,11 +42,11 @@ CInfoBox::CInfoBox(
 
     if (aUnit.size() > 0)
     {
-        lv_label_set_text_fmt(mValue, "%u %s", aValue, aUnit.c_str());
+        lv_label_set_text_fmt(mValue, "%u %.2f", static_cast<float>(aValue / 1000.0f), aUnit.c_str());
     }
     else
     {
-        lv_label_set_text_fmt(mValue, "%u", aValue);
+        lv_label_set_text_fmt(mValue, "%.2f", static_cast<float>(aValue / 1000.0f));
     }
 
     lv_obj_center(mValue);
@@ -71,11 +71,11 @@ void CInfoBox::setValue(uint32_t aValue)
     {
         if (mUnit.size() > 0)
         {
-            lv_label_set_text_fmt(mValue, "%u %s", aValue, mUnit.c_str());
+            lv_label_set_text_fmt(mValue, "%.2f %s", static_cast<float>(aValue / 1000.0f), mUnit.c_str());
         }
         else
         {
-            lv_label_set_text_fmt(mValue, "%u", aValue);
+            lv_label_set_text_fmt(mValue, "%.2f", static_cast<float>(aValue / 1000.0f));
         }
     }
 }

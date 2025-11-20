@@ -33,7 +33,7 @@ set(MAIN_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/main.cpp
 
     ${PROJECT_SOURCE_DIR}/CDisplayInitializer.cpp
-    ${PROJECT_SOURCE_DIR}/CGuiApp.cpp
+    ${PROJECT_SOURCE_DIR}/CFrontend.cpp
     ${PROJECT_SOURCE_DIR}/CSegfaultHandler.cpp
 
     ${PROJECT_SOURCE_DIR}/sidePanel/CSidePanel.cpp
