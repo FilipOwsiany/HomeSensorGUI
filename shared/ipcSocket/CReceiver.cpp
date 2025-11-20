@@ -34,7 +34,7 @@ void* CReceiver::receiver(void* arg)
         RecvStatus status = receiver->receiveN(&evnetType, 1, -1);
         if (status == RecvStatus::Ok)
         {
-            std::cout << "Received data: 0x" 
+            std::cout << "Received type: 0x" 
                 << std::hex << std::uppercase << static_cast<int>(evnetType) 
                 << std::dec << "\n";
         }
@@ -59,7 +59,7 @@ void* CReceiver::receiver(void* arg)
         status = receiver->receiveN(reinterpret_cast<uint8_t*>(&evnetLen), 2, -1);
         if (status == RecvStatus::Ok)
         {
-            std::cout << "Received data: 0x" 
+            std::cout << "Received len: 0x" 
                 << std::hex << std::uppercase << static_cast<int>(evnetLen) 
                 << std::dec << "\n";
         }
@@ -98,6 +98,10 @@ void* CReceiver::receiver(void* arg)
             CEventDispatcher::getInstance().dispatchEvent(event);
 
             delete event;
+        }
+        else
+        {
+            std::cerr << "null event!\n";
         }
         
     }

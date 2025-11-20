@@ -25,7 +25,12 @@ public:
         {
             case EEventType::Temperature:
                 return new CEventTemperature();
-            // Add cases for other event types as needed
+            case EEventType::Humidity:
+                return new CEventHumidity();
+            case EEventType::Pressure:
+                return new CEventPressure();
+            case EEventType::Voltage:
+                return new CEventVoltage();
             default:
                 return nullptr;
         }
