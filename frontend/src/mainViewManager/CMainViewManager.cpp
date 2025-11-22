@@ -29,7 +29,6 @@ void CMainViewManager::callback(lv_event_t *aEvent, uint32_t aId)
     {
         for (auto &container : mViewContainers)
         {
-            lv_obj_t *btn = static_cast<lv_obj_t *>(lv_event_get_target(aEvent));
             if (container.mId == aId)
             {
                 lv_obj_clear_flag(container.mObject->getObject(), LV_OBJ_FLAG_HIDDEN);

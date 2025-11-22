@@ -17,10 +17,12 @@ class CMainViewManager : public CLVGLCallbackInterface
 {
 private:
     std::vector<SObjectContairner<CObject>> mViewContainers;
+
+protected:
     void callback(lv_event_t *aEvent, uint32_t aId) override;
 
 public:
-    CMainViewManager(/* args */);
+    CMainViewManager();
     ~CMainViewManager();
 
     void registerView(CObject *aView, uint32_t aId, const std::string &aName);
