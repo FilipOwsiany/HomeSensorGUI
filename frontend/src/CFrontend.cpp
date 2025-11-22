@@ -75,8 +75,7 @@ CFrontend::~CFrontend()
     delete mLayoutView;
     delete mSensorsView;
     delete mStatusBar;
-    delete mSidePanel;
-    delete mMainViewManager;
+    delete mSidePanel;;
     delete mDisplayInitializer;
 }
 
@@ -87,9 +86,9 @@ void CFrontend::initLvgl()
 
 void CFrontend::createUi()
 {
-    mMainViewManager = new CMainViewManager();
+    // mMainViewManager = new CMainViewManager();
 
-    mSidePanel = new CSidePanel(*mMainViewManager,
+    mSidePanel = new CSidePanel(*this,
                                 lv_screen_active(),
                                 20, 20, 180, 680);
 
@@ -101,10 +100,12 @@ void CFrontend::createUi()
     mSettingsView = new CSettingsView(lv_screen_active(), 230, 130, 1030, 570);
     mInfoView     = new CInfoView    (lv_screen_active(), 230, 130, 1030, 570);
 
-    mMainViewManager->registerView(mSensorsView,  0, "Sensors View");
-    mMainViewManager->registerView(mLayoutView,   1, "Layout View");
-    mMainViewManager->registerView(mSettingsView, 2, "Settings View");
-    mMainViewManager->registerView(mInfoView,     3, "Info View");
+    registerView(mSensorsView,  0, "Sensors View");
+    registerView(mLayoutView,   1, "Layout View");
+    registerView(mSettingsView, 2, "Settings View");
+    registerView(mInfoView,     3, "Info View");
+
+    callback(nullptr, 0);
 }
 
 void CFrontend::onEvent(CEventBase* aEvent)

@@ -2,8 +2,8 @@
 #define C_FRONTEND_H
 
 #include "IEventCallback.h"
+#include "CMainViewManager.h"
 
-class CMainViewManager;
 class CSidePanel;
 class CStatusBar;
 class CSensorsView;
@@ -12,7 +12,7 @@ class CSettingsView;
 class CInfoView;
 class CDisplayInitializer;
 
-class CFrontend : public IEventCallback
+class CFrontend : public IEventCallback , public CMainViewManager
 {
 public:
     CFrontend();
@@ -29,7 +29,7 @@ private:
 private:
     CDisplayInitializer* mDisplayInitializer    {nullptr};
 
-    CMainViewManager* mMainViewManager          {nullptr};
+    // CMainViewManager* mMainViewManager          {nullptr};
     CSidePanel*       mSidePanel                {nullptr};
     CStatusBar*       mStatusBar                {nullptr};
 
