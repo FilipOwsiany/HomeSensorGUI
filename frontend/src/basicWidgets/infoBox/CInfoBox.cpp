@@ -42,7 +42,7 @@ CInfoBox::CInfoBox(
 
     if (aUnit.size() > 0)
     {
-        lv_label_set_text_fmt(mValue, "%u %.2f", static_cast<float>(aValue / 1000.0f), aUnit.c_str());
+        lv_label_set_text_fmt(mValue, "%.2f %s", static_cast<float>(aValue / 1000.0f), aUnit.c_str());
     }
     else
     {
