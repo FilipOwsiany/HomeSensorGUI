@@ -16,7 +16,7 @@ protected:
     uint8_t* mPayload = nullptr;
 public:
     CEventBase(EEventType aEventType, int aPayloadSize, uint8_t* aPayload, uint16_t aPayloadExpectedSize = 0);
-    ~CEventBase();
+    virtual ~CEventBase();
 
     EEventType getEventType() const { return mEventType; }
     int getPayloadMaxSize() const { return mPayloadMaxSize; }

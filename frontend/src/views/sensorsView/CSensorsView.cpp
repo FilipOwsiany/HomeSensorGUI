@@ -16,7 +16,7 @@ CSensorsView::CSensorsView(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aW
     lv_obj_set_style_grid_column_dsc_array(mObject, col_dsc, 0);
     lv_obj_set_style_grid_row_dsc_array(mObject, row_dsc, 0);
 
-    for(uint8_t i = 0; i < 4; i++) 
+    for(uint8_t i = 0; i < 3; i++) 
     {
         uint8_t col = i % 2;
         uint8_t row = i / 2;

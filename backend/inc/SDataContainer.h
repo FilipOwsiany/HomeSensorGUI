@@ -3,6 +3,7 @@
 
 #include <string>
 #include <optional>
+#include <cstdint>
 
 struct SDataContainerAuthorization
 {
