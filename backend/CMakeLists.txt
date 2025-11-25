@@ -35,13 +35,11 @@ set(MAIN_SOURCE_INCLUDES
     ${APP_INCLUDE_DIR}
 )
 
-find_package(OpenSSL REQUIRED)
+add_subdirectory(../shared/ipcSocket ipcSocket)
 
 if(CMAKE_CROSSCOMPILING)
     message("************************* INFO **************************")
     message("Building backend for RPI5")
-
-    add_subdirectory(../shared/ipcSocket ipcSocket)
 
     add_executable(${PROJECT_NAME} ${MAIN_SOURCE_FILES})
 
@@ -55,15 +53,13 @@ if(CMAKE_CROSSCOMPILING)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         pthread
         ipcSocket
-        OpenSSL::SSL
-        OpenSSL::Crypto
+        ssl
+        crypto
     )
 
 else()
     message("************************* INFO **************************")
     message("Building backend for Host")
-
-    add_subdirectory(../shared/ipcSocket ipcSocket)
 
     add_executable(${PROJECT_NAME} ${MAIN_SOURCE_FILES})
 
@@ -77,7 +73,7 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE
         pthread
         ipcSocket
-        OpenSSL::SSL
-        OpenSSL::Crypto
+        ssl
+        crypto
     )
 endif()
