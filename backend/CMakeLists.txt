@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(hostApp C CXX)
+project(backend C CXX)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)   # *.a
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)   # *.so
@@ -39,7 +39,7 @@ find_package(OpenSSL REQUIRED)
 
 if(CMAKE_CROSSCOMPILING)
     message("************************* INFO **************************")
-    message("Building hostApp for RPI5")
+    message("Building backend for RPI5")
 
     add_subdirectory(../shared/ipcSocket ipcSocket)
 
@@ -61,7 +61,7 @@ if(CMAKE_CROSSCOMPILING)
 
 else()
     message("************************* INFO **************************")
-    message("Building hostApp for Host")
+    message("Building backend for Host")
 
     add_subdirectory(../shared/ipcSocket ipcSocket)
 

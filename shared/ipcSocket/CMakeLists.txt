@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.10)
+project(ipcSocketLib CXX)
+
 add_library(ipcSocket SHARED 
     CSocketServer.cpp
     CSocketClient.cpp
