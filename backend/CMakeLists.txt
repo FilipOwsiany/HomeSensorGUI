@@ -9,7 +9,6 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-# Tak jak w displayApplication – inne flagi debug dla cross/host
 if(CMAKE_CROSSCOMPILING)
     set(CMAKE_C_FLAGS_DEBUG   "-g -Og")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -Og")
@@ -36,7 +35,6 @@ set(MAIN_SOURCE_INCLUDES
     ${APP_INCLUDE_DIR}
 )
 
-# OpenSSL wspólne dla obu wariantów (PC / RPi5)
 find_package(OpenSSL REQUIRED)
 
 if(CMAKE_CROSSCOMPILING)

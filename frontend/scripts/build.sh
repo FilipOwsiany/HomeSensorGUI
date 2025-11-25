@@ -197,5 +197,5 @@ echo "Build completed successfully!"
 # --- Run (only PC) ---
 if [ $isRunSet -eq 1 ]; then
     echo "Running the built application..."
-    ./bin/displayApplication
+    ./bin/frontend
 fi

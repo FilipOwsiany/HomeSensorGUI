@@ -77,7 +77,7 @@ fi
 
 # Stop any running instances of the application on the target
 ssh root@"$targetIP" "
-pids=\$(pidof displayApplication)
+pids=\$(pidof frontend)
 if [ -n \"\$pids\" ]; then
     echo 'Application is already running, stopping all instances:'
     kill -9 \$pids
@@ -149,7 +149,7 @@ fi
 if [ $isRunSet -eq 1 ]; then
 
     ssh root@"$targetIP" "appDate=\$(date +'%Y-%m-%d_%H-%M-%S'); \
-        /home/$buildDirPath/bin/displayApplication > /home/$buildDirPath/logs/output_\$appDate.log 2>&1 &"
+        /home/$buildDirPath/bin/frontend > /home/$buildDirPath/logs/output_\$appDate.log 2>&1 &"
 
     if [ $? -ne 0 ]; then
         echo "Failed to start application on target."
