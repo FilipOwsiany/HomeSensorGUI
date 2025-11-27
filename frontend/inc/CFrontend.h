@@ -27,6 +27,8 @@ private:
     void onEvent(CEventBase* aEvent) override;
 
 private:
+
+    pthread_mutex_t mutex;
     CDisplayInitializer* mDisplayInitializer    {nullptr};
 
     // CMainViewManager* mMainViewManager          {nullptr};

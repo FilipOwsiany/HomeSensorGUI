@@ -21,6 +21,10 @@ CFrontend::CFrontend()
 {
     initLvgl();
 
+    pthread_mutex_init(&mutex, nullptr);
+
+    pthread_mutex_lock(&mutex);
+
     mDisplayInitializer = new CDisplayInitializer();
 
     lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x252B3B), 0);
@@ -66,6 +70,8 @@ CFrontend::CFrontend()
 
 
     CEventDispatcher::getInstance().registerCallback(this, EEventType::Temperature);
+
+    pthread_mutex_unlock(&mutex);
 }
 
 CFrontend::~CFrontend()
@@ -110,8 +116,13 @@ void CFrontend::createUi()
 
 void CFrontend::onEvent(CEventBase* aEvent)
 {
+    static int cnt = 0;
+    pthread_mutex_lock(&mutex);
     if (!aEvent)
+    {
+        pthread_mutex_unlock(&mutex);
         return;
+    }
 
     auto* wifiEvent = new CEventWifi();
     wifiEvent->setWifiEventType(CEventWifi::EEventWifiType::CONNECTED);
@@ -125,6 +136,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
     bluetoothEvent->setBluetoothEventType(CEventBluetooth::EEventBluetoothType::DISCONNECTED);
     mStatusBar->callback(*bluetoothEvent);
 
+    std::cout << "Event cnt" << cnt++ << std::endl;
     switch (aEvent->getEventType())
     {
         // =====================================================================
@@ -134,11 +146,11 @@ void CFrontend::onEvent(CEventBase* aEvent)
         {
             auto* e = static_cast<CEventTemperature*>(aEvent);
 
-            auto* internal = new CEventSensorTemperature();
-            internal->setSensorId(0);
-            internal->setSensorTemperature(e->getTemperature());
+            CEventSensorTemperature internal;
+            internal.setSensorId(0);
+            internal.setSensorTemperature(e->getTemperature());
 
-            mSensorsView->callback(*internal);
+            mSensorsView->callback(internal);
 
             std::cout << "[EVENT] Temperature: "
                       << std::dec << e->getTemperature()
@@ -154,11 +166,11 @@ void CFrontend::onEvent(CEventBase* aEvent)
         {
             auto* e = static_cast<CEventPressure*>(aEvent);
 
-            auto* internal = new CEventSensorPressure();
-            internal->setSensorId(0);
-            internal->setSensorPressure(e->getPressure());
+            CEventSensorPressure internal;
+            internal.setSensorId(0);
+            internal.setSensorPressure(e->getPressure());
 
-            mSensorsView->callback(*internal);
+            mSensorsView->callback(internal);
 
             std::cout << "[EVENT] Pressure: "
                       << std::dec << e->getPressure()
@@ -174,11 +186,11 @@ void CFrontend::onEvent(CEventBase* aEvent)
         {
             auto* e = static_cast<CEventHumidity*>(aEvent);
 
-            auto* internal = new CEventSensorHumidity();
-            internal->setSensorId(0);
-            internal->setSensorHumidity(e->getHumidity());
+            CEventSensorHumidity internal;
+            internal.setSensorId(0);
+            internal.setSensorHumidity(e->getHumidity());
 
-            mSensorsView->callback(*internal);
+            mSensorsView->callback(internal);
 
             std::cout << "[EVENT] Humidity: "
                       << std::dec << e->getHumidity()
@@ -194,11 +206,11 @@ void CFrontend::onEvent(CEventBase* aEvent)
         {
             auto* e = static_cast<CEventVoltage*>(aEvent);
 
-            auto* internal = new CEventSensorBattery();
-            internal->setSensorId(0);
-            internal->setSensorBatteryLevel(e->getVoltage());
+            CEventSensorBattery internal;
+            internal.setSensorId(0);
+            internal.setSensorBatteryLevel(e->getVoltage());
 
-            mSensorsView->callback(*internal);
+            mSensorsView->callback(internal);
 
             std::cout << "[EVENT] Voltage: "
                       << std::dec << e->getVoltage()
@@ -218,6 +230,8 @@ void CFrontend::onEvent(CEventBase* aEvent)
             break;
         }
     }
+
+    pthread_mutex_unlock(&mutex);
 }
 
 
@@ -225,7 +239,9 @@ int CFrontend::run()
 {
     while (true)
     {
+        pthread_mutex_lock(&mutex);
         lv_timer_handler();
+        pthread_mutex_unlock(&mutex);
         usleep(5000);
     }
     return 0;
