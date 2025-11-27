@@ -1,9 +1,7 @@
 #include "CBackend.h"
 #include "CJsonParser.h"
 
-#include "evn.h"
-
-CBackend::CBackend(const std::string& aHost) : mHttps(aHost), mIsValid(false)
+CBackend::CBackend(const std::string& aHost) : mHttps(aHost), mIsValid(false), mEnvReader("env.txt", "/home/")
 {
     if (!mHttps.isValid())
     {
@@ -19,11 +17,21 @@ CBackend::~CBackend()
 {
 }
 
+bool CBackend::readEnv()
+{
+    mEnvReader.openFile();
+    if (!mEnvReader.isGoodFile())
+    {
+        return false;
+    }
+    return mEnvReader.readFile();;
+}
+
 bool CBackend::authorize()
 {
-    const std::string loginUrl   = LOGIN_URL;
-    const std::string email      = EMAIL;
-    const std::string password   = PASSWORD;
+    const std::string loginUrl   = mEnvReader.getEnvReadedData().mLoginUrl;
+    const std::string email      = mEnvReader.getEnvReadedData().mEmail;
+    const std::string password   = mEnvReader.getEnvReadedData().mPassword;
 
     CHttps::Headers loginHeaders = {
         { "Content-Type", "application/json" },
@@ -69,7 +77,7 @@ bool CBackend::authorize()
 std::optional<std::vector<SDataContainerSensorMeasurment>> 
 CBackend::getSensorMeasurments()
 {
-    const std::string dataUrl = DADA_URL;
+    const std::string dataUrl = mEnvReader.getEnvReadedData().mDataUrl;
 
     CHttps::Headers dataHeaders = {
         { "Content-Type",  "application/json" },

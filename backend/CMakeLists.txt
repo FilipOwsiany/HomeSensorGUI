@@ -29,6 +29,7 @@ set(MAIN_SOURCE_FILES
     ${APP_SOURCE_DIR}/main.cpp
     ${APP_SOURCE_DIR}/CJsonParser.cpp
     ${APP_SOURCE_DIR}/CBackend.cpp
+    ${APP_SOURCE_DIR}/CEnvReader.cpp
 )
 
 set(MAIN_SOURCE_INCLUDES 

@@ -15,6 +15,11 @@ int main()
     {
         return 1;
     }
+
+    if (!backend.readEnv())
+    {
+        return 1;
+    }
     
     if (!backend.authorize())
     {
