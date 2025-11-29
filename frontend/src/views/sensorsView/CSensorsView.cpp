@@ -4,9 +4,11 @@
 #include "CSensor.h"
 #include "CCustomEvent.h"
 #include "CStyleFactory.h"
+#include "CLogger.h"
 
 CSensorsView::CSensorsView(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight) : CObject(aParent, aWidth, aHeight, aX, aY)
 {
+    LOG_DEBUG("CSensorsView::CSensorsView() called");
     CStyleFactory::sensorsMain(mObject);
 
     static int32_t col_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};

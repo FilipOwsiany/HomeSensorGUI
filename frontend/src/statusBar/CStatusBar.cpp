@@ -3,10 +3,11 @@
 #include "CButton.h"
 #include "CCell.h"
 #include "CCustomEvent.h"
+#include "CStyleFactory.h"
+#include "CLogger.h"
 
 CStatusBar::CStatusBar(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight)
 {
-
     static lv_style_t style;
     lv_style_init(&style);
     lv_style_set_radius(&style, 5);
@@ -91,23 +92,6 @@ CStatusBar::~CStatusBar()
 
 void CStatusBar::callback(CCustomEventBase &aEvent)
 {
-    printf("CStatusBar::callback called! ID: %d\n", aEvent.getId());
-
-    // uint32_t eventId = static_cast<uint32_t>(aEvent.getId());
-
-    // auto itIconImage = std::find_if(
-    //     mIconImagesContainers.begin(), mIconImagesContainers.end(),
-    //     [eventId](const SObjectContairner<lv_obj_t>& c) {
-    //         return c.mId == eventId;
-    //     });
-
-    // lv_obj_t * img = nullptr;
-
-    // if (itIconImage != mIconImagesContainers.end())
-    // {
-    //     img = itIconImage->mObject;
-    // }
-
     switch (aEvent.getId())
     {
     case CCustomEventBase::EEventId::WIFI:
@@ -124,23 +108,23 @@ void CStatusBar::callback(CCustomEventBase &aEvent)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback WIFI CONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback WIFI CONNECTED\n");
         }
         else if (wifiEvent.getWifiEventType() == CEventWifi::EEventWifiType::DISCONNECTED)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback WIFI DISCONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback WIFI DISCONNECTED\n");
         }
         else if (wifiEvent.getWifiEventType() == CEventWifi::EEventWifiType::GOT_IP)
         {
             /* code */
-            printf("CStatusBar::callback WIFI GOT_IP\n");
+            LOG_DEBUG("CStatusBar::callback WIFI GOT_IP\n");
         }
         else if (wifiEvent.getWifiEventType() == CEventWifi::EEventWifiType::LOST_IP)
         {
             /* code */
-            printf("CStatusBar::callback WIFI LOST_IP\n");
+            LOG_DEBUG("CStatusBar::callback WIFI LOST_IP\n");
         }
         break;
     }
@@ -158,23 +142,23 @@ void CStatusBar::callback(CCustomEventBase &aEvent)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback CLOUD CONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback CLOUD CONNECTED\n");
         }
         else if (cloudEvent.getCloudEventType() == CEventCloud::EEventCloudType::DISCONNECTED)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback CLOUD DISCONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback CLOUD DISCONNECTED\n");
         }
         else if (cloudEvent.getCloudEventType() == CEventCloud::EEventCloudType::DATA_SENT)
         {
             /* code */
-            printf("CStatusBar::callback CLOUD DATA_SENT\n");
+            LOG_DEBUG("CStatusBar::callback CLOUD DATA_SENT\n");
         }
         else if (cloudEvent.getCloudEventType() == CEventCloud::EEventCloudType::DATA_RECEIVED)
         {
             /* code */
-            printf("CStatusBar::callback CLOUD DATA_RECEIVED\n");
+            LOG_DEBUG("CStatusBar::callback CLOUD DATA_RECEIVED\n");
         }
         break;
     }
@@ -192,13 +176,13 @@ void CStatusBar::callback(CCustomEventBase &aEvent)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback BLUETOOTH CONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback BLUETOOTH CONNECTED\n");
         }
         else if (bluetoothEvent.getBluetoothEventType() == CEventBluetooth::EEventBluetoothType::DISCONNECTED)
         {
             lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
             lv_obj_set_style_img_recolor_opa(img, LV_OPA_COVER, LV_PART_MAIN);
-            printf("CStatusBar::callback BLUETOOTH DISCONNECTED\n");
+            LOG_DEBUG("CStatusBar::callback BLUETOOTH DISCONNECTED\n");
         }
         else if (bluetoothEvent.getBluetoothEventType() == CEventBluetooth::EEventBluetoothType::DATA_SENT)
         {
@@ -208,7 +192,7 @@ void CStatusBar::callback(CCustomEventBase &aEvent)
         else if (bluetoothEvent.getBluetoothEventType() == CEventBluetooth::EEventBluetoothType::DATA_RECEIVED)
         {
             /* code */
-            printf("CStatusBar::callback BLUETOOTH DATA_RECEIVED\n");
+            LOG_DEBUG("CStatusBar::callback BLUETOOTH DATA_RECEIVED\n");
         }
         break;
     }

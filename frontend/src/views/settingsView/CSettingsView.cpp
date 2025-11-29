@@ -1,8 +1,10 @@
 #include "CSettingsView.h"
 #include "CStyleFactory.h"
+#include "CLogger.h"
 
 CSettingsView::CSettingsView(lv_obj_t *aParent, int32_t aX, int32_t aY, int32_t aWidth, int32_t aHeight) : CObject(aParent, aWidth, aHeight, aX, aY)
 {
+    LOG_DEBUG("CSettingsView::CSettingsView() called");
     CStyleFactory::settingsMain(mObject);
 
     lv_obj_t * label = lv_label_create(mObject);

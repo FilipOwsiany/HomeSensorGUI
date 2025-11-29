@@ -3,11 +3,13 @@
 #include "CCell.h"
 #include "CCustomEvent.h"
 #include "CStyleFactory.h"
+#include "CLogger.h"
 
 CSensor::CSensor(lv_obj_t *aParent, int32_t aX, int32_t aY,
                  int32_t aWidth, int32_t aHeight)
 : CObject(aParent, aWidth, aHeight, aX, aY)
 {
+    LOG_DEBUG("CSensor::CSensor() called");
     CStyleFactory::sensorMain(mObject);
 
     static int32_t col_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};

@@ -1,4 +1,5 @@
 #include "CPirBacklightController.h"
+#include "CLogger.h"
 
 #include <fcntl.h>
 #include <poll.h>
@@ -33,7 +34,7 @@ bool CPirBacklightController::start()
     int ret1 = pthread_create(&mThreadPoll, nullptr, &CPirBacklightController::pollThreadEntry, this);
     if (ret1 != 0)
     {
-        perror("pthread_create pollThread");
+        LOG_ERROR("Failed to create mThreadPoll");
         mRunning = false;
         return false;
     }
@@ -41,7 +42,7 @@ bool CPirBacklightController::start()
     int ret2 = pthread_create(&mThreadControl, nullptr, &CPirBacklightController::controlThreadEntry, this);
     if (ret2 != 0)
     {
-        perror("pthread_create controlThread");
+        LOG_ERROR("Failed to create mThreadControl");
         mRunning = false;
         pthread_cancel(mThreadPoll);
         pthread_join(mThreadPoll, nullptr);
@@ -87,12 +88,12 @@ void* CPirBacklightController::controlThreadEntry(void* arg)
 
 void CPirBacklightController::pollLoop()
 {
-    std::cout << "Poll thread started\n";
+    LOG_INFO("Starting pollLoop");
 
     int fd = open(mPirDevicePath.c_str(), O_RDONLY);
     if (fd < 0)
     {
-        perror("open PIR device");
+        LOGF_ERROR("Failed to open PIR device: %s", mPirDevicePath.c_str());
         mRunning = false;
         return;
     }
@@ -108,7 +109,7 @@ void CPirBacklightController::pollLoop()
         int ret = poll(&pfd, 1, 1000);
         if (ret < 0)
         {
-            perror("poll");
+            LOG_ERROR("Poll error on PIR device");
             break;
         }
 
@@ -123,20 +124,19 @@ void CPirBacklightController::pollLoop()
             {
                 mDetectedTimeNs = nowNs();
                 mDetected       = true;
-                printf("PIR event -> %u\n", val);
+                LOGF_DEBUG("PIR detected motion, value=%d", val);
                 fflush(stdout);
             }
         }
     }
 
     close(fd);
-    std::cout << "Poll thread exiting\n";
+    LOG_DEBUG("Exiting pollLoop");
 }
 
 void CPirBacklightController::controlLoop()
 {
-    std::cout << "Control thread started, timeout set to "
-              << mTimeoutSeconds << " seconds\n";
+    LOGF_DEBUG("Control thread started, timeout set to %ld seconds", mTimeoutSeconds);
 
     long timeoutCounter = 0;
 
@@ -145,11 +145,11 @@ void CPirBacklightController::controlLoop()
     while (mRunning.load())
     {
         usleep(100000); // 100 ms
-        printf("Control heartbeat at %lld ns\n", nowNs());
+        LOGF_DEBUG("Control heartbeat at %lld ns", nowNs());
 
         if (mDetected.load())
         {
-            printf("PIR detected, resetting timeout counter\n");
+            LOG_DEBUG("PIR detected, resetting timeout counter");
             setBacklight(31);
             timeoutCounter = 0;
             mDetected = false;
@@ -162,17 +162,17 @@ void CPirBacklightController::controlLoop()
             }
         }
 
-        printf("Timeout counter: %ld / %ld seconds\n",
-               timeoutCounter / 10, mTimeoutSeconds);
+        LOGF_DEBUG("Timeout counter: %ld / %ld seconds",
+                  timeoutCounter / 10, mTimeoutSeconds);
 
         if (timeoutCounter >= mTimeoutSeconds * 10)
         {
-            printf("Timeout reached (%ld seconds)\n", mTimeoutSeconds);
+            LOGF_DEBUG("Timeout reached (%ld seconds)\n", mTimeoutSeconds);
             setBacklight(1);
         }
     }
 
-    std::cout << "Control thread exiting\n";
+    LOG_DEBUG("Exiting controlLoop");
 }
 
 long long CPirBacklightController::nowNs()
@@ -196,6 +196,10 @@ void CPirBacklightController::setBacklight(int value)
     int ret = system(cmd);
     if (ret != 0)
     {
-        perror("system(setBacklight)");
+        LOGF_ERROR("Failed to set backlight to %d (system returned %d)", value, ret);
+    }
+    else
+    {
+        LOGF_INFO("Backlight set to %d", value);
     }
 }

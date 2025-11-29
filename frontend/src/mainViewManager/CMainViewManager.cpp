@@ -1,7 +1,9 @@
 #include "CMainViewManager.h"
+#include "CLogger.h"
 
 CMainViewManager::CMainViewManager(/* args */)
 {
+    LOG_DEBUG("CMainViewManager::CMainViewManager() called");
 }
 
 CMainViewManager::~CMainViewManager()

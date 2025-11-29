@@ -1,5 +1,5 @@
 #include "CDisplayInitializer.h"
-
+#include "CLogger.h"
 #include <cstdlib>
 #include <stdio.h>
 
@@ -11,7 +11,7 @@ CDisplayInitializer::CDisplayInitializer()
 void CDisplayInitializer::init()
 {
 #if BUILDING_FOR_RPI5 == 1
-    printf("\n\nBuilding for RPI5\n\n");
+    LOG_INFO("Initializing display for RPI5");
     mDisplay = lv_linux_fbdev_create();
     lv_linux_fbdev_set_file(mDisplay,
         getenv("LV_LINUX_FBDEV_DEVICE") ?: "/dev/fb0");
@@ -21,7 +21,7 @@ void CDisplayInitializer::init()
         getenv("EVDEV_NAME") ?: "/dev/input/event5");
     lv_indev_set_display(mInput, mDisplay);
 #elif BUILDING_FOR_PC == 1
-    printf("\n\nBuilding for Host\n\n");
+    LOG_INFO("Initializing display for PC (SDL)");
     const char *w_env = getenv("LV_SDL_WIDTH");
     const char *h_env = getenv("LV_SDL_HEIGHT");
     int32_t w = w_env ? atoi(w_env) : 1280;

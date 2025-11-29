@@ -2,6 +2,7 @@
 #include "CButton.h"
 #include "CCell.h"
 #include "CStyleFactory.h"
+#include "CLogger.h"
 #include <algorithm>
 
 CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface,
@@ -12,6 +13,7 @@ CSidePanel::CSidePanel(CLVGLCallbackInterface& aCallbackInterface,
                        int32_t aHeight)
     : itsCallbackInterface(aCallbackInterface)
 {
+    LOG_DEBUG("CSidePanel::CSidePanel() called");
     if (!aParent) return;
 
     mObject = lv_obj_create(aParent);
@@ -53,7 +55,7 @@ CSidePanel::~CSidePanel() {}
 
 void CSidePanel::callback(lv_event_t* aEvent, uint32_t aId)
 {
-    printf("CSidePanel::callback called! ID: %u\n", aId);
+    LOGF_DEBUG("CSidePanel::callback() called with ID: %u\n", aId);
 
     static lv_style_t grad_style;
     lv_style_init(&grad_style);

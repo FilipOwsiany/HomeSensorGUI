@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "CLogger.h"
 #include "CDisplayInitializer.h"
-
 #include "CMainViewManager.h"
 #include "CSidePanel.h"
 #include "CStatusBar.h"
@@ -116,7 +116,6 @@ void CFrontend::createUi()
 
 void CFrontend::onEvent(CEventBase* aEvent)
 {
-    static int cnt = 0;
     pthread_mutex_lock(&mutex);
     if (!aEvent)
     {
@@ -136,7 +135,8 @@ void CFrontend::onEvent(CEventBase* aEvent)
     bluetoothEvent->setBluetoothEventType(CEventBluetooth::EEventBluetoothType::DISCONNECTED);
     mStatusBar->callback(*bluetoothEvent);
 
-    std::cout << "Event cnt" << cnt++ << std::endl;
+    static int cnt = 0;
+    LOGF_INFO("Event cnt %d", cnt);
     switch (aEvent->getEventType())
     {
         // =====================================================================
@@ -151,11 +151,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
             internal.setSensorTemperature(e->getTemperature());
 
             mSensorsView->callback(internal);
-
-            std::cout << "[EVENT] Temperature: "
-                      << std::dec << e->getTemperature()
-                      << " (scaled)\n";
-
+            LOGF_INFO("Temperature event: %u", e->getTemperature());
             break;
         }
 
@@ -171,11 +167,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
             internal.setSensorPressure(e->getPressure());
 
             mSensorsView->callback(internal);
-
-            std::cout << "[EVENT] Pressure: "
-                      << std::dec << e->getPressure()
-                      << " (scaled)\n";
-
+            LOGF_INFO("Pressure event: %u", e->getPressure());
             break;
         }
 
@@ -191,11 +183,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
             internal.setSensorHumidity(e->getHumidity());
 
             mSensorsView->callback(internal);
-
-            std::cout << "[EVENT] Humidity: "
-                      << std::dec << e->getHumidity()
-                      << " (scaled)\n";
-
+            LOGF_INFO("Humidity event: %u", e->getHumidity());
             break;
         }
 
@@ -211,11 +199,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
             internal.setSensorBatteryLevel(e->getVoltage());
 
             mSensorsView->callback(internal);
-
-            std::cout << "[EVENT] Voltage: "
-                      << std::dec << e->getVoltage()
-                      << " (scaled)\n";
-
+            LOGF_INFO("Voltage event: %u", e->getVoltage());
             break;
         }
 
@@ -224,9 +208,7 @@ void CFrontend::onEvent(CEventBase* aEvent)
         // =====================================================================
         default:
         {
-            std::cout << "[EVENT] Unknown event type: "
-                      << static_cast<int>(aEvent->getEventType())
-                      << "\n";
+            LOGF_WARN("Unknown event type: %d", static_cast<int>(aEvent->getEventType()));
             break;
         }
     }

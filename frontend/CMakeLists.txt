@@ -81,6 +81,7 @@ if(CMAKE_CROSSCOMPILING)
 
     add_subdirectory(lvgl lvgl)
     add_subdirectory(assets)
+    add_subdirectory(../shared/logger logger)
     add_subdirectory(../shared/ipcSocket ipcSocket)
 
 
@@ -100,6 +101,7 @@ if(CMAKE_CROSSCOMPILING)
         m
         assets
         ipcSocket
+        logger
     )
 else()
     message("************************* INFO **************************")
@@ -110,6 +112,7 @@ else()
 
     add_subdirectory(lvgl lvgl)
     add_subdirectory(assets)
+    add_subdirectory(../shared/logger logger)
     add_subdirectory(../shared/ipcSocket ipcSocket)
 
     find_package(PkgConfig REQUIRED)
@@ -134,6 +137,7 @@ else()
         m
         assets
         ipcSocket
+        logger
         ${SDL2_LIBRARIES} 
         ${SDL2_IMAGE_LIBRARIES}
     )

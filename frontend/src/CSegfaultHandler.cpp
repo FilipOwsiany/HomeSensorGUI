@@ -30,11 +30,15 @@ namespace
         char **backTraceSymbols = backtrace_symbols(backTrace, backtraceSize);
 
         printf("### SEGFAULT: stack trace:\n");
-        for (int i = 0; i < backtraceSize; i++) {
+        for (int i = 0; i < backtraceSize; i++) 
+        {
             Dl_info info;
-            if (dladdr(backTrace[i], &info) && info.dli_sname) {
+            if (dladdr(backTrace[i], &info) && info.dli_sname) 
+            {
                 printf("(%d.) %s : %s\n", i, info.dli_fname, info.dli_sname);
-            } else {
+            } 
+            else 
+            {
                 printf("(%d.) %p\n", i, backTrace[i]);
             }
         }
