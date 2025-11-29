@@ -1,4 +1,5 @@
 #include "CSocketServer.h"
+#include "CLogger.h"
 #include <unistd.h>
 #include <poll.h>
 
@@ -6,11 +7,11 @@
 
 CSocketServer::CSocketServer(int aPort) : mPort(aPort)
 {
-    std::cout << "Starting server on port " << mPort << "\n";
+    LOGF_DEBUG("Starting server on port %d", mPort);
     mServerSockFd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (mServerSockFd < 0)
     {
-        std::cerr << "Failed to create socket\n";
+        LOG_ERROR("Failed to create socket");
         mIsError = true;
         return;
     }
@@ -18,7 +19,7 @@ CSocketServer::CSocketServer(int aPort) : mPort(aPort)
     int optval = 1;
     if (setsockopt(mServerSockFd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) 
     {
-        std::cerr << "Failed to set socket options\n";
+        LOG_ERROR("Failed to set socket options");
         mIsError = true;
         return;
     }
@@ -31,7 +32,7 @@ CSocketServer::CSocketServer(int aPort) : mPort(aPort)
 
     if (bind(mServerSockFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) 
     {
-        std::cerr << "Failed to bind socket\n";
+        LOG_ERROR("Failed to bind socket");
         mIsError = true;
         return;
     }
@@ -42,7 +43,7 @@ CSocketServer::CSocketServer(int aPort) : mPort(aPort)
 
 CSocketServer::~CSocketServer()
 {
-    std::cout << "Closing server socket\n";
+    LOG_DEBUG("Closing server socket");
     if (mServerSockFd > 0) {
         close(mServerSockFd);
     }
@@ -58,9 +59,9 @@ void CSocketServer::waitForClient()
 
     mIsClientConnected = true;
 
-    std::cout << "Client connected: " 
-              << inet_ntoa(mClientData.mClientAddr.sin_addr) 
-              << ":" << ntohs(mClientData.mClientAddr.sin_port) << "\n";
+    LOGF_INFO("Client connected: %s:%d", 
+              inet_ntoa(mClientData.mClientAddr.sin_addr), 
+              ntohs(mClientData.mClientAddr.sin_port));
 }
 
 bool CSocketServer::pollSocket()
@@ -75,7 +76,7 @@ bool CSocketServer::pollSocket()
 
     if (ret < 0) 
     {
-        std::cerr << "Poll error\n";
+        LOG_ERROR("Poll error on socket");
         return false;
     }
 
@@ -129,14 +130,12 @@ CSocketServer::RecvStatus CSocketServer::receiveN(uint8_t* aBuffer, int aN, int 
         }
 
         ssize_t r = recv(mClientData.mNewSockFd, (p + got), (aN - got), 0);
-        std::cout << "Receiving data: ";
+        LOG_DEBUG("Receiving data: ");
         for(size_t i = 0; i < static_cast<size_t>(aN); i++)
         {
-            std::cout << "0x" 
-                << std::hex << std::uppercase << static_cast<int>(aBuffer[i]) 
-                << std::dec << " ";
+            LOGF_DEBUG("%02X ", aBuffer[i]);
         }
-        std::cout << "\n";
+        LOG_DEBUG("");
 
         if (r > 0) 
         { 

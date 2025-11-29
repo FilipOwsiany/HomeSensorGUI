@@ -78,14 +78,10 @@ CStream& CStream::operator<<(T aValue)
 template<typename T>
 CStream& CStream::operator>>(T& aValue)
 {
-    printf("1 CStream::operator>>\n");
-
     if (mIsError || (leftToRead() < sizeof(T)))
     {
         return *this;
     }
-
-    printf("2 CStream::operator>>\n");
 
     std::memcpy(&aValue, &mBuffer[mPosition], sizeof(T));
     mPosition += sizeof(T);

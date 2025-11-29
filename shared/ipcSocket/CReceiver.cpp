@@ -1,5 +1,5 @@
 #include "CReceiver.h"
-
+#include "CLogger.h"
 #include "CStream.h"
 #include "EEventType.h"
 #include "CEventBase.h"
@@ -11,7 +11,7 @@ CReceiver::CReceiver(/* args */) : CSocketServer(9000)
 {
     waitForClient();
 
-    std::cout << "Starting receiver thread in CReceiver\n";
+    LOG_DEBUG("Starting receiver thread in CReceiver");
 
     pthread_create(&mReceiverThread, nullptr, 
                    (void* (*)(void*)) CReceiver::receiver, 
@@ -25,7 +25,7 @@ CReceiver::~CReceiver()
 
 void* CReceiver::receiver(void* arg)
 {
-    std::cout << "Receiver thread started\n";
+    LOG_DEBUG("Receiver thread started");
     CReceiver* receiver = static_cast<CReceiver*>(arg);
 
     while (true)
@@ -34,9 +34,7 @@ void* CReceiver::receiver(void* arg)
         RecvStatus status = receiver->receiveN(&evnetType, 1, -1);
         if (status == RecvStatus::Ok)
         {
-            std::cout << "Received type: 0x" 
-                << std::hex << std::uppercase << static_cast<int>(evnetType) 
-                << std::dec << "\n";
+            LOGF_DEBUG("Received event type: 0x%02X", evnetType);
         }
         else if (status == RecvStatus::Timeout)
         {
@@ -45,13 +43,13 @@ void* CReceiver::receiver(void* arg)
         }
         else if (status == RecvStatus::Closed)
         {
-            std::cout << "Client disconnected, waiting for new client...\n";
+            LOG_DEBUG("Client disconnected, waiting for new client...");
             receiver->waitForClient();
             continue;
         }
         else
         {
-            std::cerr << "Receive error\n";
+            LOG_DEBUG("Receive error");
             continue;
         }   
 
@@ -59,24 +57,22 @@ void* CReceiver::receiver(void* arg)
         status = receiver->receiveN(reinterpret_cast<uint8_t*>(&evnetLen), 2, -1);
         if (status == RecvStatus::Ok)
         {
-            std::cout << "Received len: 0x" 
-                << std::hex << std::uppercase << static_cast<int>(evnetLen) 
-                << std::dec << "\n";
+            LOGF_DEBUG("Received len: 0x%04X", evnetLen);
         }
         else if (status == RecvStatus::Timeout)
         {
-            std::cout << "Receive timeout\n";
+            LOG_WARN("Receive timeout");
             continue;
         }
         else if (status == RecvStatus::Closed)
         {
-            std::cout << "Client disconnected, waiting for new client...\n";
+            LOG_WARN("Client disconnected, waiting for new client...");
             receiver->waitForClient();
             continue;
         }
         else
         {
-            std::cerr << "Receive error\n";
+            LOG_ERROR("Receive error");
             continue;
         }   
 
@@ -89,7 +85,7 @@ void* CReceiver::receiver(void* arg)
             
             for (size_t i = 0; i < evnetLen; i++)
             {
-                std::cout << "Payload data[" << i << "]: " << std::hex << static_cast<int>(buffer[i])  << "\n";
+                LOGF_DEBUG("Payload data[%zu]: %02X", i, buffer[i]);
             }
             CStream stream(buffer, evnetLen, CStream::EDirection::OUT);
             event->unserialize(stream);
@@ -101,7 +97,7 @@ void* CReceiver::receiver(void* arg)
         }
         else
         {
-            std::cerr << "null event!\n";
+            LOG_ERROR("Failed to create event");
         }
         
     }
@@ -121,19 +117,19 @@ void CReceiver::handleReviceStatus(RecvStatus status)
 {
     if (status == RecvStatus::Ok)
     {
-        std::cout << "Received data!\n";
+        LOG_DEBUG("Received data successfully");
     }
     else if (status == RecvStatus::Timeout)
     {
-        std::cout << "Receive timeout\n";
+        LOG_WARN("Receive timeout");
     }
     else if (status == RecvStatus::Closed)
     {
-        std::cout << "Client disconnected, waiting for new client...\n";
+        LOG_WARN("Client disconnected, waiting for new client...");
         waitForClient();
     }
     else
     {
-        std::cerr << "Receive error\n";
+        LOG_ERROR("Receive error");
     } 
 }
