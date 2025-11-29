@@ -125,7 +125,6 @@ void CPirBacklightController::pollLoop()
                 mDetectedTimeNs = nowNs();
                 mDetected       = true;
                 LOGF_DEBUG("PIR detected motion, value=%d", val);
-                fflush(stdout);
             }
         }
     }
@@ -139,13 +138,23 @@ void CPirBacklightController::controlLoop()
     LOGF_DEBUG("Control thread started, timeout set to %ld seconds", mTimeoutSeconds);
 
     long timeoutCounter = 0;
+    long long lastHeartbeatLogNs = 0;
+    long long lastCounterLogNs   = 0;
+    bool timeoutLogged           = false;
 
     setBacklight(31);
 
     while (mRunning.load())
     {
         usleep(100000); // 100 ms
-        LOGF_DEBUG("Control heartbeat at %lld ns", nowNs());
+
+        long long now = nowNs();
+
+        if (now - lastHeartbeatLogNs >= 5LL * 1000 * 1000 * 1000)
+        {
+            LOGF_DEBUG("Control heartbeat at %lld ns", now);
+            lastHeartbeatLogNs = now;
+        }
 
         if (mDetected.load())
         {
@@ -153,27 +162,37 @@ void CPirBacklightController::controlLoop()
             setBacklight(31);
             timeoutCounter = 0;
             mDetected = false;
+            timeoutLogged = false;
         }
         else
         {
-            if (timeoutCounter < mTimeoutSeconds * 10) // *10 because 10 * 100ms = 1s
+            if (timeoutCounter < mTimeoutSeconds * 10) // *10 because 10 * 100 ms = 1 s
             {
                 timeoutCounter++;
             }
         }
 
-        LOGF_DEBUG("Timeout counter: %ld / %ld seconds",
-                  timeoutCounter / 10, mTimeoutSeconds);
+        if (now - lastCounterLogNs >= 1LL * 1000 * 1000 * 1000)
+        {
+            LOGF_DEBUG("Timeout counter: %ld / %ld seconds",
+                       timeoutCounter / 10, mTimeoutSeconds);
+            lastCounterLogNs = now;
+        }
 
         if (timeoutCounter >= mTimeoutSeconds * 10)
         {
-            LOGF_DEBUG("Timeout reached (%ld seconds)\n", mTimeoutSeconds);
+            if (!timeoutLogged)
+            {
+                LOGF_INFO("Timeout reached (%ld seconds), dimming backlight", mTimeoutSeconds);
+                timeoutLogged = true;
+            }
             setBacklight(1);
         }
     }
 
     LOG_DEBUG("Exiting controlLoop");
 }
+
 
 long long CPirBacklightController::nowNs()
 {
