@@ -31,14 +31,21 @@ public:
         eInfoTileCount
     };
 
-    const std::string mSensorInfoBoxNames[static_cast<uint32_t>(ESensorInfoBoxIds::eInfoTileCount)] = {
+    const uint8_t mSensorInfoBoxDecimals[static_cast<uint32_t>(ESensorInfoBoxIds::eInfoTileCount)] = {
+        1,
+        2,
+        0,
+        0
+    };
+
+    const std::string mSensorInfoBoxUnit[static_cast<uint32_t>(ESensorInfoBoxIds::eInfoTileCount)] = {
         "C",
         "%",
         "Pa",
         "mV"
     };
 
-    const std::string mSensorInfoBoxUnit[static_cast<uint32_t>(ESensorInfoBoxIds::eInfoTileCount)] = {
+    const std::string mSensorInfoBoxNames[static_cast<uint32_t>(ESensorInfoBoxIds::eInfoTileCount)] = {
         "Temperature",
         "Humidity",
         "Pressure",

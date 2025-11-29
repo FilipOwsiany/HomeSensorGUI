@@ -53,7 +53,8 @@ CSensor::CSensor(lv_obj_t *aParent, int32_t aX, int32_t aY,
                 0,
                 LV_PCT(100),
                 LV_PCT(100),
-                mSensorInfoBoxNames[i - 1],
+                mSensorInfoBoxDecimals[i - 1],
+                mSensorInfoBoxUnit[i - 1],
                 mSensorInfoBoxImages[i - 1]
             );
         }

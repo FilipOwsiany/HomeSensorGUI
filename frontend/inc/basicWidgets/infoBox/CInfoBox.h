@@ -15,6 +15,7 @@ private:
     lv_obj_t *      mValue      = nullptr;
     uint32_t        mValueData  = 0;
     std::string     mUnit;
+    uint8_t         mDecimals   = 2;
 public:
     void addImage(const lv_img_dsc_t* aImageDsc);
     void setValue(uint32_t aValue);
@@ -24,6 +25,7 @@ public:
     int32_t aY, 
     int32_t aWidth, 
     int32_t aHeight,
+    uint8_t aDecimals = 2,
     std::string aUnit = "",
     const lv_img_dsc_t* aImageDsc = nullptr,
     uint32_t aValue = 0);
