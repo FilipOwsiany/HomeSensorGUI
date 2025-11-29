@@ -5,9 +5,16 @@
 #include "CSender.h"
 #include "CEvents.h"
 #include "CBackend.h"
+#include "CLogger.h"
 
 int main()
 {
+    CLogger::instance().setLevel(CLogger::Level::DEBUG);
+    CLogger::instance().setMaxQueueSize(5000);
+    CLogger::instance().setMaxLogSize(256);
+    CLogger::instance().enableFile("/tmp/backend.log");
+
+    LOG_INFO("Backend application started");
     const std::string host = "home.meryyfifonsz.xyz";
     CBackend backend(host);
 
@@ -42,12 +49,12 @@ int main()
 
         for (auto& s : *result)
         {
-            std::cout << "ts: "             << s.timestamp
-                      << "  mTemperature: " << s.mTemperature
-                      << "  mPressure: "    << s.mPressure
-                      << "  mHumidity: "    << s.mHumidity
-                      << "  mVoltage: "     << s.mVoltage
-                      << "\n";
+            LOGF_DEBUG("ts: %llu  mTemperature: %f  mPressure: %f  mHumidity: %f  mVoltage: %u",
+                      s.timestamp,
+                      s.mTemperature,
+                      s.mPressure,
+                      s.mHumidity,
+                      s.mVoltage);
 
             mean.mTemperature   += s.mTemperature;
             mean.mPressure      += s.mPressure;
@@ -65,23 +72,6 @@ int main()
         mean.mPressure      /= sampleNumber;
         mean.mHumidity      /= sampleNumber;
         mean.mVoltage       /= sampleNumber;
-
-        printf("mean.mTemperature %f\n", mean.mTemperature);
-        printf("mean.mTemperature %u\n",
-            static_cast<uint32_t>((mean.mTemperature * 1000.0) / 1000.0));
-
-        printf("mean.mPressure %f\n", mean.mPressure);
-        printf("mean.mPressure %u\n",
-            static_cast<uint32_t>((mean.mPressure * 1000.0) / 1000.0));
-
-        printf("mean.mHumidity %f\n", mean.mHumidity);
-        printf("mean.mHumidity %u\n",
-            static_cast<uint32_t>((mean.mHumidity * 1000.0) / 1000.0));
-
-        printf("mean.mVoltage %f\n", mean.mVoltage);
-        printf("mean.mVoltage %u\n",
-            static_cast<uint32_t>((mean.mVoltage * 1000.0) / 1000.0));
-
 
         constexpr double SCALE = 1000.0;
 

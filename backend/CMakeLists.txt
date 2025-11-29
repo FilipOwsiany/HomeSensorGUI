@@ -36,6 +36,7 @@ set(MAIN_SOURCE_INCLUDES
     ${APP_INCLUDE_DIR}
 )
 
+add_subdirectory(../shared/logger logger)
 add_subdirectory(../shared/ipcSocket ipcSocket)
 
 if(CMAKE_CROSSCOMPILING)
@@ -54,6 +55,7 @@ if(CMAKE_CROSSCOMPILING)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         pthread
         ipcSocket
+        logger
         ssl
         crypto
     )
@@ -74,6 +76,7 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE
         pthread
         ipcSocket
+        logger
         ssl
         crypto
     )

@@ -56,25 +56,21 @@ bool CEnvReader::readFile()
 {
     
     mEnvReadedData.mLoginUrl = readLine(1, 300);
-    std::cout << mEnvReadedData.mLoginUrl << "\n";
     if (mEnvReadedData.mLoginUrl == "")
     {
         return false;
     }
     mEnvReadedData.mDataUrl = readLine(2, 300);
-    std::cout << mEnvReadedData.mDataUrl << "\n";
     if (mEnvReadedData.mDataUrl == "")
     {
         return false;
     }
     mEnvReadedData.mEmail = readLine(3, 300);
-    std::cout << mEnvReadedData.mEmail << "\n";
     if (mEnvReadedData.mEmail == "")
     {
         return false;
     }
     mEnvReadedData.mPassword = readLine(4, 300);
-    std::cout << mEnvReadedData.mPassword << "\n";
     if (mEnvReadedData.mPassword == "")
     {
         return false;

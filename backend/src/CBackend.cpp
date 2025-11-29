@@ -1,5 +1,6 @@
 #include "CBackend.h"
 #include "CJsonParser.h"
+#include "CLogger.h"
 
 CBackend::CBackend(const std::string& aHost) : mHttps(aHost), mIsValid(false), mEnvReader("env.txt", "/home/")
 {
@@ -49,28 +50,28 @@ bool CBackend::authorize()
 
     if (!loginResponse)
     {
-        std::cerr << "No response from server during login\n";
+        LOG_ERROR("No response from server during login");
         return false;
     }
 
-    std::cout << "Login status: " << loginResponse->status << "\n";
-    std::cout << "Login body: "   << loginResponse->body   << "\n";
+    LOGF_DEBUG("Login status: %d", loginResponse->status);
+    LOGF_DEBUG("Login body: %s", loginResponse->body.c_str());
 
     if (loginResponse->status != 200)
     {
-        std::cerr << "Login failed (status != 200)\n";
+        LOG_ERROR("Login failed (status != 200)");
         return false;
     }
 
     auto parsedAuthorization = CJsonParser::parseAuthResponse(loginResponse->body);
     if (!parsedAuthorization)
     {
-        std::cerr << "Failed to parse login response (JSON)\n";
+        LOG_ERROR("Failed to parse login response (JSON)");
         return false;
     }
 
     mAuthorization = *parsedAuthorization;
-    std::cout << "Token: " << mAuthorization.token << "\n";
+    LOGF_DEBUG("Token: %s", mAuthorization.token.c_str());
     return true;
 }
 
@@ -89,16 +90,16 @@ CBackend::getSensorMeasurments()
 
     if (!dataResponse)
     {
-        std::cerr << "No response from server while fetching sensor data\n";
+        LOG_ERROR("No response from server while fetching sensor data");
         return std::nullopt;
     }
 
-    std::cout << "Data status: " << dataResponse->status << "\n";
+    LOGF_DEBUG("Data status: %d", dataResponse->status);
 
     if (dataResponse->status != 200)
     {
-        std::cerr << "Fetching sensor data failed (status != 200)\n";
-        std::cerr << "Body: " << dataResponse->body << "\n";
+        LOG_ERROR("Fetching sensor data failed (status != 200)");
+        LOGF_ERROR("Body: %s", dataResponse->body.c_str());
         return std::nullopt;
     }
 
